@@ -8,9 +8,11 @@ https://colab.research.google.com/drive/1vNBWcvx-enUxJCj5XizBani4VQFCTVO9?usp=sh
 
 In Colab click File -> Save A Copy In Drive
 
-This will copy all of the cells to your own personal copy. 
+  (This will copy all of the cells to your own personal copy, opening a new Colab Notebook tab in your browser.)
 
-Click the top cell (where it says import..., import...) and click Ctrl/Command + Enter until you go all the way to the bottom.
+Click the top cell (where it says import..., import...) 
+
+and click Ctrl/Command + Enter to run all the cells until you go all the way to the bottom.
 
 I've created a lot of interactive models for you to play with to really get a feel for what happened with the model.
 
