@@ -1,7 +1,10 @@
 Hello! Thanks for taking a look at my project.
+
 If you just want the simplest way to to see the results of the experiment, I recommend 
 opening this link to my public copy of "RESULTS - Plotting K-Means Model Results.ipynb" on Google Colab:
+
 https://colab.research.google.com/drive/1vNBWcvx-enUxJCj5XizBani4VQFCTVO9?usp=sharing
+
 
 In Colab click File -> Save A Copy In Drive
 This will copy all of the cells to your own personal copy. Click the top cell (where it says import..., import...) and click Ctrl/Command + Enter until you go all the way to the bottom.
