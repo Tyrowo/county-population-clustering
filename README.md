@@ -14,9 +14,7 @@ Click the top cell (where it says import..., import...)
 
 and click Ctrl/Command + Enter to run all the cells until you go all the way to the bottom.
 
-I've created a lot of interactive models for you to play with to really get a feel for what happened with the model.
-
-However, the sliders for the interactive models don't work on MY personal copy, so copying to your own drive and running the code will enable you to play with the models.
+I've created a lot of interactive models for you to play with to really get a feel for what happened with the model. However, the sliders for the interactive models will not work for you on MY personal copy without Editing permissions, so copying to your own drive and running the code will enable you to play with the models.
 
 
 You're welcome to run through any of the other ipnyb files too if you want to see the process of building the K-Means clustering model. I've left them full of notes from my thought process along the way, and with the print statements that happened from running everything. 
