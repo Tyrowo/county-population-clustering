@@ -7,8 +7,13 @@ https://colab.research.google.com/drive/1vNBWcvx-enUxJCj5XizBani4VQFCTVO9?usp=sh
 
 
 In Colab click File -> Save A Copy In Drive
-This will copy all of the cells to your own personal copy. Click the top cell (where it says import..., import...) and click Ctrl/Command + Enter until you go all the way to the bottom.
-It has a lot of interactive models for you to play with to really get a feel for what happened with the model.
+
+This will copy all of the cells to your own personal copy. 
+
+Click the top cell (where it says import..., import...) and click Ctrl/Command + Enter until you go all the way to the bottom.
+
+I've created a lot of interactive models for you to play with to really get a feel for what happened with the model.
+
 However, the sliders for the interactive models don't work on MY personal copy, so copying to your own drive and running the code will enable you to play with the models.
 
 
