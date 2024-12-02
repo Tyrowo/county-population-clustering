@@ -1,0 +1,147 @@
+colab resources notes:
+was at 58.39
+had 100 for the month, that A100 must have been chugging
+2:40 am
+
+switching to CPU while prototyping
+
+11/23/24 6:11pm just started running through my stuff on cpu, down to 56.93 units already lolwut
+11/23/24 7:07pm down to 56.78 units without really running anything lol
+11/24/24 1:30 55.93
+11/24/24 4:12 55.49 - ok so even though it's going down kinda constantly at least it's not popping off. the past 2.5 hours I've been HEAVY using reworking all the plots of a million points and whatnot. so I guess turning off the gpu saves a lot.
+11/24/24 8:42 54.77 - after getting my k means model to run
+11/25/24 01:18 52.31 - 
+11/25/24 13:30 50.14 - cpu is SO much less expensive that's wild. 
+
+18m 15s runtime on cpu for 
+5 seeds and 3, 4 k
+
+doing a100
+54.65 units
+didn't even finish my run of 5 seeds of 21k, and down to 52.87 compunits
+was at about 15mins of runtime when I bailed out I think I was on like seed 4
+
+Unfortunately this size data set is unfeasible. Need to reduce to the smaller data set, going all the way down to the 250,000 because there's just no way this will work for more seeds and more data points
+
+250k
+k=20, seeds = 5 took 7.5 minutes
+k=21, seeds = 5 finished at 14m
+
+reduced to 100k
+k=20, seeds = 5 took 3 minutes. a pretty direct amount of time savings, that's good.
+k=21, seeds = 5 finished at 6.5m
+k=22, seeds = 5 finished at 10.5m, so if every 5 seeds takes 200s, 20*5 is 4000s, so it will take an hour and 7 minutes to go through 100 seeds
+
+k=5, seeds = 100, 41m
+
+3h19m - on 1000, s75
+4h0m - 3000 s84
+finished in 4h 5m 
+
+
+5 improved at 0, 2, 6
+50 imp     at 0, 5, 6, 34, 54, 72, 
+100 imp    at 0, 5, 6, 25, 26, 34, 71, 
+1000 imp   at 0, 1, 5, 29, 50, 71
+3000 imp   at 0, 3, 7, 14, 29, 40, 
+
+
+trying to not save the centroids to see if that helps - still finished at 3 minutes so it looks like not.
+
+noticed a redundancy. when testing seeds 0-4, seed 0 always turned out to be the best one. I'd imagine all of the other seeds are the same way where a few seeds are just "better" than all the others.
+So we need to find the best seeds and eliminate redundant time
+testing 100 seeds, test them at k=5, k=50, k=100, k=1000, k=2000, k=3000, see if they're all identical
+narrow down to just the best 5 seeds. 
+
+time to pivot - 
+1. reduce data set to 2500 per, need to create a shuffled version to go down to 100,000 data points in the test set.
+2. find the optimal seeds and create a list with only those.
+2b. don't save best init centroids it's a waste of memory, once we know which seeds we're using we can just grab those init centroids, because we're just adding one every time
+3. write algorithm to start with max counties, 
+
+
+to test elbow
+ks = [5, 10, 25, 50, 100, 200, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 2500]
+7 seeds
+on 750 at 39 mins
+on 1250 at 45 mins, yeah looks like it's still holding that each is taking 3 mins
+
+now that we have a better picture of the elbow let's pick seeds that fit the range that we're going to be testing
+go from seeds 0 to 250 on k = [75, 150, 225, 300] and that causes incredible coverage for our range of 1 to 350
+is 4 overkill? last time we had 5 at 100 seeds a piece = 500. this would be 1000 so yeah.
+I'll take 6, 71, 72, and 99 from the first 100, adding them into the comparison list with 100 to 250
+for k = 225 and 300, to cover the range of our elbow.
+YES 4 is absolutely overkill.
+71 was the optimal seed for Everything from 133 to 515
+So all we need to test is k = 215,
+
+time to test 225 from  
+
+at 225 the loss is 50000, I think that should be our elbow point
+
+then instead of testing ALL the seeds I'll use ranges
+5 (6), 50 (72), 100 (71) are useful
+[ seed 6 for k 1-10]
+[ seed 34 for k 11-110]
+[ seed 71 for k 111-350]
+and whatever we figure out for 126-275, 276-350
+
+
+
+
+Testing seeds - k=69 and k=225, testing seeds 150-250 (inclusive) + the best 1 from 0-100
+so with 352 seeds tested it took 3h 8m to complete. 
+71 is co
+
+after removing matplotlib plotting, and running the optimized k-means:
+currently running 10 per 3 minutes, 
+So it should be done in about 2 hours (42 * 3 mins = 126)
+
+140 at 1h30m, 1/3 of the way through the 420 i'm doing
+
+first time bailed, the whole tab shut off. got through 2 hours like was at 200something
+I FORGOT TO TURN OFF THE MEMORY SAVER ON CHROME I FUCKING SCREAMED OH MAN THAT SUCKED
+second try at 327 at 1h 42m. maybe refreshing the tab or turning off the chrome or maybe there was a bunch of memory freed up by not running all of the cells. In any case it's going much faster
+
+
+visualizations:
+tiled display of the initial seeds
+slider allowing you to see optimal positions from 1 to 350, defaulting to determined elbow/sillouhette point
+elbow graphs showing cost over k
+
+
+
+overall takeaways - feeling pretty limited with how little cuda I was able to apply. Other than pytorch built in methods I felt like I wasn't really taking advantage because I had to hardcode so much of my calculations
+I greatly underestimated the time of running a kmeans clustering, I thought bigger data would mean better for AI, and with my data set it really shouldn't be that bad. But K means is an n^2 algorithm... maybe my implementation is worse.
+really struggling on thinking of a better way to do this assignment step 
+VISUALIZATION SHOULD BE DEBUGGING NOT WHILE THE MODEL IS RUNNING
+limitations - one thing I was thinking about while I was conceptualizing was that if you have so many clusters, that LA county ought to have more than one.
+Unfortunately due to all of the data points being on top of each other that was impossible.
+it would have been prudent to find some data specific to LA county and break it down further, so that all of those data points weren't sharing just one station.
+
+I wasn't satisfied just eyeballing the loss values when I was comparing between the test data and the model data. So I went ahead and found an easy way to implement a statistical ttest with scipy, and ran the test finding that there was not a statistically significant difference between our pivot k 225, or the full list of average losses for each k.
+
+resume bullet - data analysis reduced time to produce model by x%
+10x reduction from the data size
+narrowing from 3100 to 350 is another 8.87x 
+reducing seeds from 100 to 7
+removing plotting reduced time from 4 mins for 7 to 3 for 10
+
+WHY did I do this project
+
+
+
+NOTES ON LA COUNTY
+I realize now that LA County is ruining my data. 
+I was reflecting on how multiple k clusters cannot sit on the same points, while I had envisioned that there should be at least 2 rail stations for the insane population in LA County.
+Now I realize that that's not just a failing of the data, but ruins the entire expectations of the experiment. 
+I'm going to take the time to split LA County into multiple population centers from an additional dataset. 
+If I were really determined I would go through the top 10 and find multiple data sets for all of them. Cook County, 
+# ok nevermind.
+Alright I started downloading population data for cities in LA County and Cook County, and started imagining how far down the list I should go breaking up the top x counties into their subcities, especially those like LA County that have no sub-county divisions.
+However, unfortunately at this point in the experiment it is too late to substantially change the dataset like that.
+I could easily take these csvs of the sub-populations within LA county and replace them into the dataset we're running the model on.
+HOWEVER, the seeds that we've established have all been based on the ginormous population in LA county, and not having too many clustering collisions on top of it. 
+If we were to break it up now there would need to be new seed optimizations run so that some amount of points are within LA county so that it can have multiple spaces.
+Furthermore it would change the title of the experiment, as I would no longer be judging this based on County population data.
+So I leave that as an improvement for the future. If I received funding I could create a better model, or more experiments could be done within the top X counties to see how many k clusters they need to represent them.

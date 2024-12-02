@@ -1,0 +1,69 @@
+Clustering is unsupervised
+
+no target labels y
+
+Clustering - groups of points similar to each other
+
+K-means clustering algorithm - 
+data points are all over the place, take a random guess where they should start
+cluster centroids, assign points to whichever is the closest centroid
+
+then recompute the centroids to the center of the clusters
+
+steps:
+1. assign each point to its closest centroid
+2. recompute the centroids
+3. repeat until there are no more changes (k means has converged)
+
+
+Kmeans
+1. randomly initialize K cluster centroids.
+2. repeat k-means convergence steps
+
+
+repeat{
+	# assign points to cluster centroids
+	from i = 1 to m # m training examples
+		ci - index from 1 to k of cluster is centroid closest to x
+		# assign example to closest centroid by determining min dist
+			min_dist = || x_i - mu_k || ** 2 
+	# move cluster centroids
+	for k = 1 to K, # k is number of centroids
+		mu_k = average (mean of points assigned to cluster k
+		# if cluster has 0 points assigned to it, discard it.
+
+Optimization objective - optimizing a specific cost function
+k means optimization objective is 
+J(for all training examples and all cluster centroids) 
+= 1/m sum 1 to m of 
+	(point - nearest cluster) ** 2
+	# this is also called the "distortion"
+tl;dr you're minimizing the squared distance of every point to its cluster centroid position.
+
+because of this, loss is practically guaranteed to go down or do nothing. If it does nothing then we can assume that the k means has converged and can break out of training.
+
+
+
+Initializing k means clusters instead of taking randoms
+K clusters should always be < m training examples.
+Can randomly pick K training examples ( will not be in our project ) 
+
+if two centroids start too close together they can get stuck in local minima.
+
+so one option is to randomize the initial points a few times and running the algorithms again.
+just randomly initialize it 100 times, keep track of cost result, select clusters that gave the lowest cost J
+1000 is too computationally expensive
+
+
+how to finally select the end value of k clusters
+elbow method - 
+plot cost vs K clusters, 
+and see where the Elbow is where the cost stops rapidly decreasing with respect to added clusters
+
+Do not choose K strictly by min cost, it will just lead to you picking largest K
+
+however sometimes the curves are a little smooth, so there's no clear elbow.
+Is there a reason you want a certain number of groups? then just use that number. Doesn't help us in this case.
+
+so basically we're on our own here.
+https://www.google.com/search?q=alternative+to+elbow+method+k+means&rlz=1C1ONGR_enUS1136US1136&oq=alternative+to+elbow+method+k+means+&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORifBTIHCAEQIRigATIHCAIQIRigATIHCAMQIRigATIHCAQQIRirAjIHCAUQIRifBdIBCDQ2NjhqMGo0qAIAsAIB&sourceid=chrome&ie=UTF-8
